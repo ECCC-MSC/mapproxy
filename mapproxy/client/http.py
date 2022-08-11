@@ -16,6 +16,7 @@
 """
 Tile retrieval (WMS, TMS, etc.).
 """
+import os
 import sys
 import time
 import warnings
@@ -152,7 +153,8 @@ class _URLOpenerCache(object):
 
             opener = urllib2.build_opener(*handlers)
 
-            opener.addheaders = [('User-agent', 'MapProxy-%s' % (version,))]
+            user_agent = os.environ.get('MAPPROXY_CLIENT_USER_AGENT', 'MapProxy-%s' % (version,))
+            opener.addheaders = [('User-agent', user_agent)]
 
             self._opener[cache_key] = (opener, passman)
         else:
